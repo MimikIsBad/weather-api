@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <div id="weatherDetails"></div>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <input type="text" name="location" id="location" placeholder="Enter Location">
+    <button>Enter</button>
+    <script>
+        let locationName = "Las Vegas"
+        const apiKey = "A3TLG7DXWCVG4FQD2UHN4B25N"
+    
+
+        function getWeather() {
+             const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${locationName}?key=${apiKey}`
+        fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not okay")
+            }
+            return response.json()
+        })
+        .then (data => {
+            console.log(data)
+
+            let currentTemp = data.currentConditions.temp;
+            const weatherDescription = data.currentConditions.conditions;
+
+            console.log(`The current temperature is ${currentTemp}F and the weather is ${weatherDescription}`)
+
+            function weather() {
+            let currentWeather = {
+                temp: currentTemp,
+                weather: weatherDescription
+            }
+            console.log(currentWeather)
+
+            let display = document.getElementById("weatherDetails")
+
+            display.innerHTML = `The temperature in ${locationName} is currently ${currentTemp} and the weather is ${weatherDescription}`
+        }
+
+            weather()
+        })
+
+        const button = document.querySelector("button")
+        const input = document.querySelector("input")
+
+        button.addEventListener("click", function() {
+            locationName = input.value
+            getWeather()
+        })
+    }
+
+    getWeather()
+    </script>
+</body>
+</html>
